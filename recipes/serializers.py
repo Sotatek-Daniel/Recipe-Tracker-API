@@ -5,10 +5,9 @@ from .models import Ingredient, Recipe, RecipeIngredient
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'unit']
+        fields = ["id", "name", "unit"]
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
@@ -16,7 +15,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeIngredient
-        fields = ['id', 'ingredient', 'quantity']
+        fields = ["id", "ingredient", "quantity"]
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -24,16 +23,13 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = [
-            'id', 'name', 'preparation_time_minutes', 'recipe_ingredients'
-        ]
+        fields = ["id", "name", "preparation_time_minutes", "recipe_ingredients"]
 
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'preparation_time_minutes']
+        fields = ["id", "name", "preparation_time_minutes"]
 
 
 class AddIngredientToRecipeSerializer(serializers.Serializer):
@@ -41,8 +37,8 @@ class AddIngredientToRecipeSerializer(serializers.Serializer):
     quantity = serializers.FloatField()
 
     def validate(self, data):
-        ingredient_id = data.get('ingredient_id')
-        quantity = data.get('quantity')
+        ingredient_id = data.get("ingredient_id")
+        quantity = data.get("quantity")
 
         try:
             Ingredient.objects.get(id=ingredient_id)
@@ -51,6 +47,7 @@ class AddIngredientToRecipeSerializer(serializers.Serializer):
 
         if quantity <= 0:
             raise serializers.ValidationError(
-                {'quantity': 'Quantity must be greater than 0'})
+                {"quantity": "Quantity must be greater than 0"}
+            )
 
         return data

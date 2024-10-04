@@ -6,4 +6,3 @@ migrate:
 
 test:
 	python manage.py test recipes.test
-

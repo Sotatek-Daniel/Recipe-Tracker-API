@@ -28,12 +28,12 @@ class Recipe(BaseModel):
 
 
 class RecipeIngredient(BaseModel):
-    recipe = models.ForeignKey(Recipe,
-                               on_delete=models.CASCADE,
-                               related_name='recipe_ingredients')
-    ingredient = models.ForeignKey(Ingredient,
-                                   on_delete=models.CASCADE,
-                                   related_name='ingredient_recipes')
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name="recipe_ingredients"
+    )
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE, related_name="ingredient_recipes"
+    )
     quantity = models.FloatField()
 
     def __str__(self):

@@ -6,9 +6,12 @@ from rest_framework.response import Response
 from .base.api_view import BaseAPIView
 from .exceptions.api_exceptions import RecipeNotFound
 from .models import Ingredient, Recipe, RecipeIngredient
-from .serializers import (AddIngredientToRecipeSerializer,
-                          IngredientSerializer, RecipeCreateSerializer,
-                          RecipeSerializer)
+from .serializers import (
+    AddIngredientToRecipeSerializer,
+    IngredientSerializer,
+    RecipeCreateSerializer,
+    RecipeSerializer,
+)
 
 
 class IngredientViewSet(generics.ListCreateAPIView):
@@ -21,13 +24,12 @@ class RecipeListCreateView(generics.ListCreateAPIView):
     serializer_class = RecipeSerializer
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             return RecipeCreateSerializer
         return RecipeSerializer
 
 
 class AddIngredientToRecipeView(BaseAPIView):
-
     @swagger_auto_schema(request_body=AddIngredientToRecipeSerializer)
     def put(self, request, recipe_id):
         try:
@@ -36,17 +38,19 @@ class AddIngredientToRecipeView(BaseAPIView):
             raise RecipeNotFound
         serializer = AddIngredientToRecipeSerializer(data=request.data)
         if serializer.is_valid():
-            ingredient_id = serializer.validated_data['ingredient_id']
-            quantity = serializer.validated_data['quantity']
+            ingredient_id = serializer.validated_data["ingredient_id"]
+            quantity = serializer.validated_data["quantity"]
 
             # Get the ingredient instance
             ingredient = Ingredient.objects.get(id=ingredient_id)
 
             # Add the ingredient to the recipe
-            RecipeIngredient.objects.create(recipe=recipe,
-                                            ingredient=ingredient,
-                                            quantity=quantity)
+            RecipeIngredient.objects.create(
+                recipe=recipe, ingredient=ingredient, quantity=quantity
+            )
 
-            return Response({"message": "Ingredient added successfully"},
-                            status=status.HTTP_201_CREATED)
+            return Response(
+                {"message": "Ingredient added successfully"},
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
