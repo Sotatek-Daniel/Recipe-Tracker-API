@@ -21,8 +21,13 @@ make migrate
 make run
 ```
 
-## Stagger docs
+## Swagger docs
 
 ```
 http://localhost:8000/swagger/
 ```
+
+## Further Improvement
+
+- [ ] Dockerfile
+- [ ] docker-compose.yaml
