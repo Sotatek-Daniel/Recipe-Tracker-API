@@ -7,7 +7,13 @@ from .base.api_view import BaseAPIView
 from .exceptions.api_exceptions import RecipeNotFound
 from .models import Ingredient, Recipe, RecipeIngredient
 from .serializers import (AddIngredientToRecipeSerializer,
-                          RecipeCreateSerializer, RecipeSerializer)
+                          IngredientSerializer, RecipeCreateSerializer,
+                          RecipeSerializer)
+
+
+class IngredientViewSet(generics.ListCreateAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
 
 class RecipeListCreateView(generics.ListCreateAPIView):
@@ -23,7 +29,7 @@ class RecipeListCreateView(generics.ListCreateAPIView):
 class AddIngredientToRecipeView(BaseAPIView):
 
     @swagger_auto_schema(request_body=AddIngredientToRecipeSerializer)
-    def post(self, request, recipe_id):
+    def put(self, request, recipe_id):
         try:
             recipe = Recipe.objects.get(id=recipe_id)
         except ObjectDoesNotExist:

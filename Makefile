@@ -4,3 +4,6 @@ run:
 migrate:
 	python3 manage.py migrate
 
+test:
+	python manage.py test recipes.test
+

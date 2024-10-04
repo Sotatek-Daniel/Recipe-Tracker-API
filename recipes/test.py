@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
+from .exceptions.api_exceptions import IngredientNotFound
 from .models import Ingredient
 from .serializers import AddIngredientToRecipeSerializer
 
@@ -26,10 +27,8 @@ class AddIngredientToRecipeSerializerTest(TestCase):
         data = {'ingredient_id': 999, 'quantity': 100.0}
 
         serializer = AddIngredientToRecipeSerializer(data=data)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn('ingredient_id', serializer.errors)
-        self.assertEqual(serializer.errors['ingredient_id'][0],
-                         'Ingredient not found')
+        with self.assertRaises(IngredientNotFound):
+            serializer.is_valid(raise_exception=True)
 
     @patch('recipes.serializers.Ingredient.objects.get')
     def test_invalid_quantity(self, mock_get):
